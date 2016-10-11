@@ -1,7 +1,6 @@
 # InfluencePropagationC
 
-To Run the Programe of finding keys for Influnce Propagation run the  com.ulb.code.wit.main.Testing class with the first argument 
-as the path of the config.properties 
+To Run the Programe of finding keys for Influnce Propagation run the RunTest.cpp file after editing the config.properties file
 
 Config file details:
 
@@ -11,12 +10,12 @@ graphFiles="Comma seperated graph file names"
 
 window="comma seperated window lenght should not be more than 100 or less than 0."
 
+windowtype=" 'p' ,without quotes if window is given in percentage and 'h' without quotes if window is in hours"
+
 seeds="number of seeds to find"
 
 outputFolder="output folder directory"
 
-mode="give either exact or approx to run exact or approx version of the algorithm"
+l="number of buckets for approx version (e.g-512)"
 
-number_of_buckets="number of buckets for approx version (e.g-512)"
 
-If no config file is provided the default configuration will run for sample file mentioned in config.properties
