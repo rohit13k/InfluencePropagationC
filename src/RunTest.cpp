@@ -70,7 +70,7 @@ int main() {
 				abswindow = wind * 60 * 60;
 			}
 			InfluenceSetApprox my(wind, l, input, output, abswindow);
-			//	my.compute(true);
+				//my.compute(true);
 			//	std::cout << wind << std::endl;
 			//my.testQuery(outputFolder + file, iseed);
 			//wind += 5;

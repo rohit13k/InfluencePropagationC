@@ -1,4 +1,6 @@
 /*
+ *
+ *
 Algorithm for Influence Estimation and Maximization
 
 Copyright (c) Microsoft Corporation

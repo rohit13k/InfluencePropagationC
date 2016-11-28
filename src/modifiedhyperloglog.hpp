@@ -53,7 +53,7 @@ public:
 	 *
 	 * @exception std::invalid_argument the argument is out of range.
 	 */
-	ModifiedHyperLogLog(uint8_t b = 7) throw (std::invalid_argument) :
+	ModifiedHyperLogLog(uint8_t b = 10) throw (std::invalid_argument) :
 			b_(b), m_(1 << b) {
 		///< registers
 		M_.resize(m_);
@@ -231,7 +231,7 @@ public:
 
 	HyperLogLog convertToHLL() {
 
-		HyperLogLog newhll(7);
+		HyperLogLog newhll(b_);
 
 		uint8_t max = 0;
 

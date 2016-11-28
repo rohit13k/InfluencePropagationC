@@ -137,7 +137,7 @@ public:
 		endtime = time(0);
 
 		//std::cout << "time ," << (endtime - starttime) << ", window , "
-		//		<< windowpercent << "," << endl;
+	//			<< windowpercent << "," << endl;
 		//	std::cout << "time taken add :" << timeadd << std::endl;
 		//	std::cout << "time taken union :" << timeunion << std::endl;
 		//	typedef std::map<string, HyperLogLog>::iterator nodeit;
@@ -159,15 +159,16 @@ public:
 
 	}
 	void findseed(string keyfile, vector<int> seedcount) {
-
-		node nd;
-		compute(false);
-		//	std::cout << "finished compute" << std::endl;
 		Platform::Timer timer;
+		timer.Start();
+		node nd;
+		compute(true);
+		//	std::cout << "finished compute" << std::endl;
+
 		for (int seedc : seedcount) {
 
 			//	std::cout << "staring" << std::endl;
-			timer.Start();
+
 			vector<node> nodelist(seedc);
 			vector<string> seedlist(seedc);
 			set<string> selectednodes;
@@ -194,7 +195,7 @@ public:
 
 			for (int i = 1; i < seedc; i++) {
 
-				max = 0.0;
+				max = -1.0;
 				newseed = "";
 				for (node &n : nodelist) {
 					if (selectednodes.find(n.nodeid) == selectednodes.end()) {
@@ -202,26 +203,37 @@ public:
 							break;
 						}
 						temp = is;
+						//std::cout <<"temp: "<<temp.estimate()<< std::endl;
 						temp.merge(n.nodeset);
 						tempsize = temp.estimate();
-						if (tempsize > max) {
-							max = tempsize;
+						if ((tempsize - is.estimate()) > max) {
+
+							max = tempsize - is.estimate();
 							maxinf = temp;
 							newseed = n.nodeid;
 							newinf = n.nodeset;
+							//	std::cout <<newseed<<" "<<newinf.estimate()<< std::endl;
 						}
 					}
+				}
+				if (newseed.compare("") == 0) {
+					std::cout << "empty seed at position" << i << " is: "
+							<< is.estimate() << " tempsize:" << tempsize
+							<< " max:" << max << std::endl;
+					exit(EXIT_FAILURE);
 				}
 				seedlist[i] = newseed;
 				selectednodes.insert(newseed);
 				is.merge(newinf);
+				//
 			}
 
-			//std::cout << windowpercent << "," << seedc << ","
-			//		<< timer.LiveElapsedMilliseconds() << std::endl;
+			std::cout << windowpercent << "," << seedc << ","
+					<< timer.LiveElapsedMilliseconds() << std::endl;
 			ofstream result;
 			stringstream resultfile;
-			resultfile << keyfile << "_" << windowpercent << "_100" << ".keys";
+			resultfile << keyfile << "_" << windowpercent << "_" << seedc
+					<< ".keys";
 			std::cout << resultfile.str() << endl;
 			result.open(resultfile.str().c_str());
 			for (string &n : seedlist) {
